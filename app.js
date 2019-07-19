@@ -48,6 +48,7 @@ passport.deserializeUser(User.deserializeUser());
 //   useFindAndModify: false
 // });
 //?connect to mongoDB Atlas, define env in heroku with $heroku config:set DATABASEURL= link(see in mongodb atlas website)    , for local set in terminal $export DATABASEURL=mongodb://localhost:27017/yelp_camp
+//*this way we can work local with our local DB and when deploy use with cloud DB
 mongoose.connect(process.env.DATABASEURL, {
   useNewUrlParser: true,
   useFindAndModify: false
@@ -83,7 +84,7 @@ app.use("/campgrounds/:id/comments", commentsRoutes);
 //   console.log("YelpCamp server has started!!");
 // });
 
-// !for heroku deploy(leave like this), and local(set env PORT=3000 and IP=localhost)
+//!for heroku deploy(leave like this), and local(set env PORT=3000 and IP=localhost)
 app.listen(process.env.PORT, process.env.IP, function() {
   console.log("YelpCamp server has started!!");
 });
