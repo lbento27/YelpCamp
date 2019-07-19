@@ -71,6 +71,10 @@ app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes); //this will make so the routes/paths inside campgrounds.js have a prefix of /campgrounds this way inside that file we dont need to put /campgrounds anymore
 app.use("/campgrounds/:id/comments", commentsRoutes);
 
-app.listen(3000, function() {
-  console.log("YelpCamp server has started!!");
-});
+//!for local use
+// app.listen(3000, function() {
+//   console.log("YelpCamp server has started!!");
+// });
+
+// !for heroku deploy use
+app.listen(process.env.PORT, process.env.IP);
