@@ -41,15 +41,21 @@ passport.use(new localStrategy(User.authenticate())); //this comes from passport
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//!connect/create to database
+//! CONNECT DB
 //?connect local, not necessary if using ENV
-// mongoose.connect("mongodb://localhost:27017/yelp_camp", {
+// mongoose.connect("mongodb://localhost:27017/yelp_camp", { //if doesn't exit will creat db wit name yelp_camp
 //   useNewUrlParser: true,
 //   useFindAndModify: false
 // });
 //?connect to mongoDB Atlas, define env in heroku with $heroku config:set DATABASEURL= link(see in mongodb atlas website)    , for local set in terminal $export DATABASEURL=mongodb://localhost:27017/yelp_camp
 //*this way we can work local with our local DB and when deploy use with cloud DB
-mongoose.connect(process.env.DATABASEURL, {
+// mongoose.connect(process.env.DATABASEURL, {
+//   useNewUrlParser: true,
+//   useFindAndModify: false
+// });
+//*instead of setting up env every time we close VSCODE make a backup like
+var urlDB = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp";
+mongoose.connect(urlDB, {
   useNewUrlParser: true,
   useFindAndModify: false
 });
@@ -57,7 +63,7 @@ mongoose.connect(process.env.DATABASEURL, {
 //!Server public directory, "connect stylesheets"
 app.use(express.static(__dirname + "/public")); // __dirname refer to where the script lives in
 
-//!seed DB,
+//!seed DB,(local DB)
 //seedDB(); // execute seeds.js
 
 //!pass req.user to every route and pass flash to
@@ -83,8 +89,15 @@ app.use("/campgrounds/:id/comments", commentsRoutes);
 // app.listen(3000, "localhost", function() {
 //   console.log("YelpCamp server has started!!");
 // });
-
 //!for heroku deploy(leave like this), and local(set env PORT=3000 and IP=localhost)
-app.listen(process.env.PORT, process.env.IP, function() {
+// app.listen(process.env.PORT, process.env.IP, function() {
+//   console.log("YelpCamp server has started!!");
+// });
+
+//*instead of setting up env every time we close VSCODE make a backup like
+var port = process.env.PORT || 3000;
+var ip = process.env.IP || "localhost";
+
+app.listen(port, ip, function() {
   console.log("YelpCamp server has started!!");
 });
