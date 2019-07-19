@@ -42,7 +42,13 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //!connect/create to database
-mongoose.connect("mongodb://localhost:27017/yelp_camp", {
+//?connect local, not necessary if using ENV
+// mongoose.connect("mongodb://localhost:27017/yelp_camp", {
+//   useNewUrlParser: true,
+//   useFindAndModify: false
+// });
+//?connect to mongoDB Atlas, define env in heroku with $heroku config:set DATABASEURL= link(see in mongodb atlas website)    , for local set in terminal $export DATABASEURL=mongodb://localhost:27017/yelp_camp
+mongoose.connect(process.env.DATABASEURL, {
   useNewUrlParser: true,
   useFindAndModify: false
 });
@@ -72,9 +78,12 @@ app.use("/campgrounds", campgroundRoutes); //this will make so the routes/paths 
 app.use("/campgrounds/:id/comments", commentsRoutes);
 
 //!for local use
-// app.listen(3000, function() {
+//not necessary if using ENV and set process-env.PORT=3000 and process.env.IP=localhost ->local use terminal $export PORT=3000
+// app.listen(3000, "localhost", function() {
 //   console.log("YelpCamp server has started!!");
 // });
 
-// !for heroku deploy use
-app.listen(process.env.PORT, process.env.IP);
+// !for heroku deploy(leave like this), and local(set env PORT=3000 and IP=localhost)
+app.listen(process.env.PORT, process.env.IP, function() {
+  console.log("YelpCamp server has started!!");
+});
