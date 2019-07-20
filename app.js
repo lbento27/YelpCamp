@@ -54,8 +54,9 @@ passport.deserializeUser(User.deserializeUser());
 //   useFindAndModify: false
 // });
 //*instead of setting up env every time we close VSCODE make a backup like
-var urlDB = "mongodb://localhost:27017/yelp_camp";
-mongoose.connect(process.env.DATABASEURL || urlDB, {
+var urlDB = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp";
+
+mongoose.connect(urlDB, {
   useNewUrlParser: true,
   useFindAndModify: false
 });
