@@ -97,8 +97,8 @@ app.use("/campgrounds/:id/comments", commentsRoutes);
 
 //*instead of setting up env every time we close VSCODE make a backup like
 var port = process.env.PORT || 3000;
-var ip = process.env.IP || "localhost";
+//var ip = process.env.IP || "localhost";
 
-app.listen(port, ip, function() {
+app.listen(port, function() {
   console.log("YelpCamp server has started!!");
 });
