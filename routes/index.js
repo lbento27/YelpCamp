@@ -5,6 +5,8 @@ var router = express.Router(); ///now with routs separetein files insted of usin
 var passport = require("passport");
 var User = require("../models/user");
 
+var Campground = require("../models/campground");
+
 //*require middleware
 //if we require a folder automatic node requires index.js file in that folder so--- var middleware= require("../middleware/index.js"); can be
 var middleware = require("../middleware");
@@ -30,7 +32,14 @@ router.get("/register", function(req, res) {
 //? handle sign up logic
 router.post("/register", function(req, res) {
   //res.send("signing you up!");
-  var newUser = new User({ username: req.body.username });
+  //*added firstname lastname email and avatar
+  var newUser = new User({
+    username: req.body.username,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    avatar: req.body.avatar
+  });
 
   //?make user admin, note: code is better move to ENV variable
   if (req.body.adminCode === "secretcode123") {
@@ -74,6 +83,33 @@ router.get("/logout", function(req, res) {
   req.logOut();
   req.flash("success", "Logout Success!");
   res.redirect("/campgrounds");
+});
+
+//!====================
+//!======USERS profiles ROUTES====
+//!====================
+router.get("/users/:id", function(req, res) {
+  User.findById(req.params.id, function(err, foundUser) {
+    if (err) {
+      req.flash("error", "Something went wrong");
+      res.redirect("/");
+    } else {
+      Campground.find()
+        .where("author.id")
+        .equals(foundUser._id)
+        .exec(function(err, campgrounds) {
+          if (err) {
+            req.flash("error", "Something went wrong");
+            res.redirect("/");
+          } else {
+            res.render("users/show", {
+              user: foundUser,
+              campgrounds: campgrounds
+            });
+          }
+        });
+    }
+  });
 });
 
 //!middleware -know all middleware are in a different file
