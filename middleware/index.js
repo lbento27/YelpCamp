@@ -29,7 +29,10 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
         res.redirect("back"); //will take user back the previous page
       } else {
         //if logged in, does user own the campground?, note: foundCampground is an object and req.user._id is a string so we cant use === we uses equals()-give by mongoose
-        if (foundCampground.author.id.equals(req.user._id)) {
+        if (
+          foundCampground.author.id.equals(req.user._id) ||
+          req.user.isAdmin
+        ) {
           next(); //continue the code where this middleware is call
         } else {
           //otherwise redirect
@@ -57,7 +60,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
         res.redirect("back"); //will take user back the previous page
       } else {
         //if logged in, does user own the comment?, note: foundComment is an object and req.user._id is a string so we cant use === we uses equals()-give by mongoose
-        if (foundComment.author.id.equals(req.user._id)) {
+        if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
           next(); //continue the code where this middleware is call
         } else {
           //otherwise redirect

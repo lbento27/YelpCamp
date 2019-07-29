@@ -31,6 +31,12 @@ router.get("/register", function(req, res) {
 router.post("/register", function(req, res) {
   //res.send("signing you up!");
   var newUser = new User({ username: req.body.username });
+
+  //?make user admin, note: code is better move to ENV variable
+  if (req.body.adminCode === "secretcode123") {
+    newUser.isAdmin = true;
+  }
+
   User.register(newUser, req.body.password, function(err, user) {
     // create a new user object and pass in only username, the reason we do not pass password is that we do not save password to the database, so we pass the password as a second argument and userregister will hash, encode password
     if (err) {
