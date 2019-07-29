@@ -78,6 +78,9 @@ app.use(function(req, res, next) {
   res.locals.success = req.flash("success"); //define to message types
   next(); //move on
 });
+
+//?make moment available to with name moment
+app.locals.moment = require("moment");
 //!
 
 //!tell app to use routes
