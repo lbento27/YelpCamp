@@ -42,7 +42,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //! CONNECT DB
-//?connect local, not necessary if using ENV
+//?connect local(run $mongod)
 // mongoose.connect("mongodb://localhost:27017/yelp_camp", { //if doesn't exit will creat db wit name yelp_camp
 //   useNewUrlParser: true,
 //   useFindAndModify: false
