@@ -94,6 +94,7 @@ router.get("/users/:id", function(req, res) {
       req.flash("error", "Something went wrong");
       res.redirect("/");
     } else {
+      //find all campgrounds form that user and pass campgrounds info as well user inf
       Campground.find()
         .where("author.id")
         .equals(foundUser._id)
