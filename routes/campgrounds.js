@@ -16,17 +16,46 @@ var middleware = require("../middleware");
 //! INDEX - show all campgrounds
 router.get("/", function(req, res) {
   //get all campgrounds from DB
-  Campground.find({}, function(err, allCampgrounds) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("campgrounds/index", {
-        campgrounds: allCampgrounds,
-        page: "campgrounds"
-        //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
-      }); //render campgrounds page and pass trough campgrounds from DB
-    }
-  });
+  //for the fuzzy search because we use a method=GET that way will creat an object (req.query) req.query.search instead of method=POST that makes an object (req.body)
+  if (req.query.search) {
+    //if exist/ if user input
+    const regex = new RegExp(escapeRegex(req.query.search), "gi"); //makes a new regular expression and use the function down as so pass in flags "gi" to ignore case sensitive g-global i-ignore case
+    //then do a regular search with that
+    //Campground.find({ name: regex }, function(err, allCampgrounds) {
+    //modify to search by author, campground if more just add
+    Campground.find(
+      { $or: [{ name: regex }, { "author.username": regex }] },
+      function(err, allCampgrounds) {
+        if (err) {
+          console.log(err);
+        } else {
+          //if no matching campgrounds
+          if (allCampgrounds < 1) {
+            req.flash("error", "No matching campgrounds!");
+            res.redirect("back");
+          } else {
+            res.render("campgrounds/index", {
+              campgrounds: allCampgrounds,
+              page: "campgrounds"
+              //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
+            }); //render campgrounds page and pass trough campgrounds from DB
+          }
+        }
+      }
+    );
+  } else {
+    Campground.find({}, function(err, allCampgrounds) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("campgrounds/index", {
+          campgrounds: allCampgrounds,
+          page: "campgrounds"
+          //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
+        }); //render campgrounds page and pass trough campgrounds from DB
+      }
+    });
+  }
 });
 
 //! CREAT - add new campground tp DB
@@ -127,6 +156,11 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res) {
     }
   });
 });
+
+//!Function to use in the fuzzy search
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 
 //!middleware -know all middleware are in a different file
 //middleware function/ function to check if we are login if true keep going, next(), otherwise redirect to login page
