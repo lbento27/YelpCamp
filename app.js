@@ -17,6 +17,7 @@ var User = require("./models/user");
 var commentsRoutes = require("./routes/comments");
 var campgroundRoutes = require("./routes/campgrounds");
 var indexRoutes = require("./routes/index");
+var userRoutes = require("./routes/user");
 
 //!require files
 var seedDB = require("./seeds"); //require seeds.js
@@ -88,6 +89,7 @@ app.locals.moment = require("moment");
 app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes); //this will make so the routes/paths inside campgrounds.js have a prefix of /campgrounds this way inside that file we dont need to put /campgrounds anymore
 app.use("/campgrounds/:id/comments", commentsRoutes);
+app.use(userRoutes);
 
 //!for local use
 //not necessary if using ENV and set process-env.PORT=3000 and process.env.IP=localhost ->local use terminal $export PORT=3000
