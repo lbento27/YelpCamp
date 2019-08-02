@@ -47,7 +47,8 @@ router.post("/register", function(req, res) {
   });
 
   //?make user admin, note: code is better move to ENV variable
-  if (req.body.adminCode === "secretcode123") {
+  //if (req.body.adminCode === "secretcode123") {
+  if (req.body.adminCode === process.env.ADMINCODE) {
     newUser.isAdmin = true;
   }
 
