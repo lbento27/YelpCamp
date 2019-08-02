@@ -31,13 +31,19 @@ router.get("/register", function(req, res) {
 //? handle sign up logic
 router.post("/register", function(req, res) {
   //res.send("signing you up!");
+
+  //handle default or user avatar
+  if (req.body.avatar) {
+    var avatar = req.body.avatar;
+  }
+
   //*added firstname lastname email and avatar
   var newUser = new User({
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    avatar: req.body.avatar
+    avatar: avatar
   });
 
   //?make user admin, note: code is better move to ENV variable
@@ -53,6 +59,7 @@ router.post("/register", function(req, res) {
       //return res.render("register");
       return res.redirect("/register");
     }
+
     //authenticate user
     passport.authenticate("local")(req, res, function() {
       req.flash("success", "Welcome to YelpCamp " + user.username);
