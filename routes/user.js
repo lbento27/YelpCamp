@@ -168,10 +168,16 @@ router.post("/reset/:token", function(req, res) {
               //.setPassword its from passport local mongoose that will do all the hash and encrypt auto and we only nedd to pass the password
               user.setPassword(req.body.password, function(err) {
                 //reset token
+                if (err) {
+                  req.flash("error", "Something went wrong!");
+                }
                 user.resetPasswordToken = undefined;
                 user.resetPasswordExpires = undefined;
                 //save/update user and login
                 user.save(function(err) {
+                  if (err) {
+                    req.flash("error", "Something went wrong!");
+                  }
                   req.logIn(user, function(err) {
                     done(err, user); //(done)=move on to the next function
                   });
@@ -211,6 +217,9 @@ router.post("/reset/:token", function(req, res) {
       }
     ],
     function(err) {
+      if (err) {
+        req.flash("error", "Something went wrong!");
+      }
       res.redirect("/campgrounds");
     }
   );
