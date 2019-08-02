@@ -58,7 +58,8 @@ var urlDB = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp";
 
 mongoose.connect(urlDB, {
   useNewUrlParser: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useCreateIndex: true
 });
 
 //!Server public directory, "connect stylesheets"

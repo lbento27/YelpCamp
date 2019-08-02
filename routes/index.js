@@ -154,22 +154,20 @@ router.post("/forgot", function(req, res, next) {
         });
       },
       //send email with nodemailer
+      //NOTE: in order to send mail with Gmail account need to enable "access to application less secure" for that account, link=https://myaccount.google.com/lesssecureapps?pli=1
       function(token, user, done) {
         //my email, email that will send email to user, put password to a ENV
         var smtpTransport = nodemailer.createTransport({
-          //service: "AOL",
           service: "Gmail",
           auth: {
-            //user:"acergaragem@aol.com",
-            user: "acergaragem@gmail.com",
+            user: "yelpcamppt@gmail.com",
             pass: process.env.GMAILPW //password to ENV set up localy and on heroku
           }
         });
         //what the user will see on their email
         var mailOptions = {
           to: user.email, //user email
-          //from: "acergaragem@aol.com",
-          from: "acergaragem@gmail.com",
+          from: "yelpcamppt@gmail.com",
           subject: "YelpCamp Password Reset",
           //, in where put link that will redirect to form to reset password
           text:
