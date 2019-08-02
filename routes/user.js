@@ -44,7 +44,7 @@ router.get("/users/:id", function(req, res) {
 //!====================
 //? show forgot form (EMAIL)
 router.get("/forgot", function(req, res) {
-  res.render("forgot");
+  res.render("users/forgot");
 });
 
 //? handle EMAIL send  for password reset logic
