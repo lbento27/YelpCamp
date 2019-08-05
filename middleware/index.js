@@ -26,7 +26,8 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
         // ||!foundCampground this handle in case the id is valid but doesn't exist in DB
         req.flash("error", "Campground not found");
         //console.log(err);
-        res.redirect("back"); //will take user back the previous page
+        //res.redirect("back"); //will take user back the previous page
+        res.redirect("/campgrounds");
       } else {
         //if logged in, does user own the campground?, note: foundCampground is an object and req.user._id is a string so we cant use === we uses equals()-give by mongoose
         if (
@@ -37,14 +38,16 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
         } else {
           //otherwise redirect
           req.flash("error", "You don't have permission to do that");
-          res.redirect("back");
+          res.redirect("/campgrounds");
+          //res.redirect("back");
         }
       }
     });
   } else {
     //if not, redirect
     req.flash("error", "You need to be logged in to do that");
-    res.redirect("back"); //will take user back the previous page
+    res.redirect("/login");
+    //res.redirect("back"); //will take user back the previous page
   }
 };
 
@@ -57,7 +60,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
       if (err || !foundComment) {
         //console.log(err);
         req.flash("error", "Comment not found");
-        res.redirect("back"); //will take user back the previous page
+        res.redirect("/campgrounds"); //will take user back the previous page
       } else {
         //if logged in, does user own the comment?, note: foundComment is an object and req.user._id is a string so we cant use === we uses equals()-give by mongoose
         if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
@@ -65,14 +68,15 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
         } else {
           //otherwise redirect
           req.flash("error", "You don't have permission to do that");
-          res.redirect("back");
+          res.redirect("/campgrounds");
         }
       }
     });
   } else {
     //if not, redirect
     req.flash("error", "You need to be logged in to do that");
-    res.redirect("back"); //will take user back the previous page
+    res.redirect("/login");
+    //res.redirect("back"); //will take user back the previous page
   }
 };
 

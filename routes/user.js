@@ -16,9 +16,9 @@ var middleware = require("../middleware");
 //!====================
 router.get("/users/:id", function(req, res) {
   User.findById(req.params.id, function(err, foundUser) {
-    if (err) {
-      req.flash("error", "Something went wrong");
-      res.redirect("/");
+    if (err || !foundUser) {
+      req.flash("error", "User not found!");
+      res.redirect("/campgrounds");
     } else {
       //find all campgrounds form that user and pass campgrounds info as well user inf
       Campground.find()
@@ -27,7 +27,7 @@ router.get("/users/:id", function(req, res) {
         .exec(function(err, campgrounds) {
           if (err) {
             req.flash("error", "Something went wrong");
-            res.redirect("/");
+            res.redirect("/campgrounds");
           } else {
             res.render("users/show", {
               user: foundUser,

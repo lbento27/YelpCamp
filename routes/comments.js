@@ -21,7 +21,7 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
   Campground.findById(req.params.id, function(err, campground) {
     if (err || !campground) {
       req.flash("error", "Campground not found");
-      res.redirect("back");
+      res.redirect("/campgrounds");
       //console.log(err);
     } else {
       res.render("comments/new", { campground: campground });
@@ -74,12 +74,12 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(
     //make sure that we found campground and its valid
     if (err || !foundCampground) {
       req.flash("error", "Campground not found");
-      res.redirect("back");
+      res.redirect("/campgrounds");
     } else {
       Comment.findById(req.params.comment_id, function(err, foundComment) {
-        if (err) {
+        if (err || !foundComment) {
           console.log(err);
-          res.redirect("back");
+          res.redirect("/campgrounds");
         } else {
           //id of campground is pass trough in app.js on routes so here we can do req.params.id= "campground id"
           res.render("comments/edit", {
@@ -103,7 +103,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(
   ) {
     if (err) {
       console.log(err);
-      res.redirect("back");
+      res.redirect("/campgrounds");
     } else {
       res.redirect("/campgrounds/" + req.params.id);
     }

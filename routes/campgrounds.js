@@ -32,7 +32,7 @@ router.get("/", function(req, res) {
           //if no matching campgrounds
           if (allCampgrounds < 1) {
             req.flash("error", "No matching campgrounds!");
-            res.redirect("back");
+            res.redirect("/campgrounds");
           } else {
             res.render("campgrounds/index", {
               campgrounds: allCampgrounds,
@@ -104,8 +104,8 @@ router.get("/:id", function(req, res) {
     .exec(function(err, foundCampground) {
       if (err || !foundCampground) {
         // ||!foundCampground this handle in case the id is valid but doesn't exist in DB
-        req.flash("error", "Campground not found");
-        res.redirect("back");
+        req.flash("error", "Campground not found!");
+        res.redirect("/campgrounds");
         //console.log(err);
       } else {
         //console.log(foundCampground);
