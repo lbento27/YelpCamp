@@ -1,5 +1,5 @@
 //dotenv only for local use(install npm install dotenv, create .env file and put variables, ignore .env file in .gitignore)
-require("dotenv").config();
+//require("dotenv").config();
 
 //!requires
 var express = require("express");
