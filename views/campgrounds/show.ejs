@@ -36,8 +36,17 @@
                                 data-target="#campgroundLikes">See more details
                             </button>
                         </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal"
+                                data-target="#campgroundLikes">
+                                <span>Total likes: <i class="fas fa-thumbs-up"></i>
+                                    <%= campground.likes.length %></span>
+                            </button>
+                        </div>
                     </form>
+
                 </div>
+
 
                 <p> <%=campground.description %> </p>
                 <p>
