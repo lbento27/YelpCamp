@@ -100,7 +100,7 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 router.get("/:id", function(req, res) {
   //find the campground with provided ID then populate comments, ate this moment only id whit actual data
   Campground.findById(req.params.id)
-    .populate("comments")
+    .populate("comments likes")
     .exec(function(err, foundCampground) {
       if (err || !foundCampground) {
         // ||!foundCampground this handle in case the id is valid but doesn't exist in DB
@@ -154,6 +154,38 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res) {
     } else {
       res.redirect("/campgrounds");
     }
+  });
+});
+
+//!Campground Like Route
+router.post("/:id/like", middleware.isLoggedIn, function(req, res) {
+  Campground.findById(req.params.id, function(err, foundCampground) {
+    if (err) {
+      console.log(err);
+      return res.redirect("/campgrounds");
+    }
+
+    // check if req.user._id exists in foundCampground.likes
+    var foundUserLike = foundCampground.likes.some(function(like) {
+      //the "some" method will search if the user is in the arry of likes, will iterate and do a .equals()
+      return like.equals(req.user._id);
+    });
+
+    if (foundUserLike) {
+      // user already liked, then removing like
+      foundCampground.likes.pull(req.user._id); //pull() remove the objectID from the array of likes
+    } else {
+      // adding the new user like
+      foundCampground.likes.push(req.user);
+    }
+
+    foundCampground.save(function(err) {
+      if (err) {
+        console.log(err);
+        return res.redirect("/campgrounds");
+      }
+      return res.redirect("/campgrounds/" + foundCampground._id);
+    });
   });
 });
 
