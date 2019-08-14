@@ -93,7 +93,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 //! NEW - show form to creat new campground
 router.get("/new", middleware.isLoggedIn, function(req, res) {
-  res.render("campgrounds/new.ejs");
+  res.render("campgrounds/new.ejs", { page: "campgroundsNew" });
 });
 
 //! SHOW - show info about one campground

@@ -33,7 +33,8 @@
                 <ul class="nav navbar-nav">
                     <li class="<%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>"><a
                             href="/campgrounds">Home</a></li>
-                    <li><a href="/campgrounds/new">Add new Campground</a></li>
+                    <li class="<%= typeof page !== 'undefined' && page === 'campgroundsNew' ? 'active' : '' %>"><a
+                            href="/campgrounds/new">Add new Campground</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <% if(!currentUser){ %>
@@ -42,7 +43,8 @@
                     <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a
                             href="/register">Sign Up</a></li>
                     <% } else { %>
-                    <li><a href="/users/<%=currentUser.id%>">Signed In As <%= currentUser.username %>
+                    <li class="<%= typeof page !== 'undefined' && page === 'user' ? 'active' : '' %>"><a
+                            href="/users/<%=currentUser.id%>">Signed In As <%= currentUser.username %>
                             <% if(currentUser && currentUser.isAdmin){%>(Admin)<% } %></a></li>
                     <li><a href="/logout">Logout</a></li>
                     <% } %>

@@ -31,7 +31,8 @@ router.get("/users/:id", function(req, res) {
           } else {
             res.render("users/show", {
               user: foundUser,
-              campgrounds: campgrounds
+              campgrounds: campgrounds,
+              page: "user"
             });
           }
         });
