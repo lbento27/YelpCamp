@@ -1,5 +1,5 @@
 //dotenv only for local use(install npm install dotenv, create .env file and put variables, ignore .env file in .gitignore)
-require("dotenv").config(); //comment this line to push to heroku
+require("dotenv").config(); //comment this line to push to heroku(maybe)
 
 //!requires
 var express = require("express");
