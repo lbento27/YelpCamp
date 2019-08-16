@@ -4,11 +4,20 @@
 <%# <div class="container"> dont need this because its in the header and footer%>
 <div class="row">
     <div class="col-md-3">
-        <p class="lead">YelpCamp</p>
-        <div class="list-group">
-            <li class="list-group-item active">Info 1</li>
-            <li class="list-group-item">Info 2</li>
-            <li class="list-group-item">Info 3</li>
+        <p class="lead">Map</p>
+        <div class="group-list">
+            <!-- MAPBOX -->
+            <div class="container-fluid map-display" id='map'></div>
+            <script>
+                mapboxgl.accessToken = '<%=process.env.MAPBOXCODE%>';
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    // improve by adding the coord from the place(need to add to "add new campground to!")
+                    center: [-119.538330, 37.865101],
+                    zoom: 10
+                });
+            </script>
         </div>
     </div>
     <div class="col-md-9">
