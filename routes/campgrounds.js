@@ -75,7 +75,11 @@ router.get("/", function(req, res) {
           } else {
             res.render("campgrounds/index", {
               campgrounds: allCampgrounds,
-              page: "campgrounds"
+              page: "campgrounds",
+              current: pageNumber,
+              pages: Math.ceil(count / perPage),
+              noMatch: noMatch,
+              search: false
               //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
             }); //render campgrounds page and pass trough campgrounds from DB
           }
