@@ -1,20 +1,20 @@
 <% include ../partials/header %>
 
 
-<%# <div class="container"> dont need this because its in the header and footer%>
+<!-- <%# <div class="container"> don t need this because its in the header and footer%> -->
 <div class="row">
     <div class="col-md-3">
         <p class="lead">Map</p>
         <div class="group-list">
             <!-- MAPBOX -->
-            <div class="container-fluid map-display" id='map'></div>
+            <div class="container-fluid map-display" id="map"></div>
             <script>
-                mapboxgl.accessToken = '<%=process.env.MAPBOXCODE%>';
+                // need to fix this key its showing to the public
+                mapboxgl.accessToken = "<%=process.env.MAPBOXCODE%>";
                 var map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v11',
-                    // improve by adding the coord from the place(need to add to "add new campground to!")
-                    center: [-119.538330, 37.865101],
+                    container: "map",
+                    style: "mapbox://styles/mapbox/streets-v11",
+                    center: ["<%=campground.coordinates.long%>", "<%=campground.coordinates.lat%>"],
                     zoom: 10
                 });
             </script>
@@ -141,6 +141,6 @@
     </div>
 </div>
 
-<%# </div> %>
+<!-- <%# </div> %> -->
 
 <% include ../partials/footer %>

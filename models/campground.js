@@ -6,6 +6,10 @@ var campgroundSchema = new mongoose.Schema({
   image: String,
   description: String,
   price: String,
+  coordinates: {
+    long: { type: String, default: "-119.538330" },
+    lat: { type: String, default: "37.865101" }
+  },
   createdAt: { type: Date, default: Date.now },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   author: {

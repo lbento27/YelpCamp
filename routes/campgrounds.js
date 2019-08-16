@@ -101,12 +101,21 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     username: req.user.username
   };
 
+  //check for coordinates or default
+  if (req.body.long && req.body.lat) {
+    var coordinates = {
+      long: req.body.long,
+      lat: req.body.lat
+    };
+  }
+
   var newCampground = {
     name: name,
     image: image,
     description: desc,
     author: author,
-    price: price
+    price: price,
+    coordinates: coordinates
   };
 
   //Creat new campground and save to DB
