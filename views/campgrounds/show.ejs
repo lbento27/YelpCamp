@@ -3,24 +3,8 @@
 
 <!-- <%# <div class="container"> don t need this because its in the header and footer%> -->
 <div class="row">
-    <div class="col-md-3">
-        <p class="lead">Map</p>
-        <div class="group-list">
-            <!-- MAPBOX -->
-            <div class="container-fluid map-display" id="map"></div>
-            <script>
-                // need to fix this key its showing to the public
-                mapboxgl.accessToken = "<%=process.env.MAPBOXCODE%>";
-                var map = new mapboxgl.Map({
-                    container: "map",
-                    style: "mapbox://styles/mapbox/streets-v11",
-                    center: ["<%=campground.coordinates.long%>", "<%=campground.coordinates.lat%>"],
-                    zoom: 10
-                });
-            </script>
-        </div>
-    </div>
-    <div class="col-md-9">
+
+    <div class="col-md-9 col-md-push-3">
         <div class="thumbnail">
             <img class="img-responsive" src="<%=campground.image%>>" alt="">
             <div class="caption-full">
@@ -102,6 +86,15 @@
             <%})%>
         </div>
     </div>
+    <!-- sidebar -->
+    <div class="col-md-3 col-md-pull-9">
+        <p class="lead">Map</p>
+        <div class="group-list">
+            <!-- MAPBOX -->
+            <p class="text-primary"><%=campground.coordinates.long%>, <%=campground.coordinates.lat%></p>
+            <div class="container-fluid map-display" id="map"></div>
+        </div>
+    </div>
 </div>
 
 <!-- Campground Likes Modal -->
@@ -141,6 +134,29 @@
     </div>
 </div>
 
-<!-- <%# </div> %> -->
+<!-- MAPBOX -->
+<script>
+    if (!mapboxgl.supported()) {
+        alert('Your browser does not support Mapbox GL');
+    } else {
+        // need to fix this key its showing to the public
+        mapboxgl.accessToken = "<%=process.env.MAPBOXCODE%>";
+        var map = new mapboxgl.Map({
+            container: "map",
+            style: "mapbox://styles/mapbox/streets-v11",
+            center: ["<%=campground.coordinates.long%>", "<%=campground.coordinates.lat%>"],// starting position [lng, lat]
+            zoom: 10
+        });
+        new mapboxgl.Marker()
+            .setLngLat(["<%=campground.coordinates.long%>", "<%=campground.coordinates.lat%>"])
+            .addTo(map);
 
+        // var popup = new mapboxgl.Popup({ closeOnClick: false })
+        //     .setLngLat(["<%=campground.coordinates.long%>", "<%=campground.coordinates.lat%>"])
+        //     .setHTML("<%=campground.name%>")
+        //     .addTo(map);
+    }
+</script>
+
+<!-- <%# </div> %> -->
 <% include ../partials/footer %>
