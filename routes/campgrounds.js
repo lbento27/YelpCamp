@@ -15,6 +15,12 @@ var middleware = require("../middleware");
 
 //! INDEX - show all campgrounds
 router.get("/", function(req, res) {
+  //pagination implementation
+  var perPage = 8;
+  var pageQuery = parseInt(req.query.page);
+  var pageNumber = pageQuery ? pageQuery : 1;
+  var noMatch = null;
+
   //get all campgrounds from DB
   //for the fuzzy search because we use a method=GET that way will creat an object (req.query) req.query.search instead of method=POST that makes an object (req.body)
   if (req.query.search) {
@@ -23,16 +29,49 @@ router.get("/", function(req, res) {
     //then do a regular search with that
     //Campground.find({ name: regex }, function(err, allCampgrounds) {
     //modify to search by author, campground if more just add
-    Campground.find(
-      { $or: [{ name: regex }, { "author.username": regex }] },
-      function(err, allCampgrounds) {
-        if (err) {
-          console.log(err);
-        } else {
-          //if no matching campgrounds
-          if (allCampgrounds < 1) {
-            req.flash("error", "No matching campgrounds!");
+    // Campground.find(
+    //   { $or: [{ name: regex }, { "author.username": regex }] },
+    //   function(err, allCampgrounds) {
+    //New search for pagination
+    Campground.find({ $or: [{ name: regex }, { "author.username": regex }] })
+      .skip(perPage * pageNumber - perPage)
+      .limit(perPage)
+      .exec(function(err, allCampgrounds) {
+        Campground.count({
+          $or: [{ name: regex }, { "author.username": regex }]
+        }).exec(function(err, count) {
+          if (err) {
+            console.log(err);
             res.redirect("/campgrounds");
+          } else {
+            //if no matching campgrounds
+            if (allCampgrounds < 1) {
+              req.flash("error", "No matching campgrounds!");
+              res.redirect("/campgrounds");
+            } else {
+              res.render("campgrounds/index", {
+                campgrounds: allCampgrounds,
+                page: "campgrounds",
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+                noMatch: noMatch,
+                search: req.query.search
+                //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
+              }); //render campgrounds page and pass trough campgrounds from DB
+            }
+          }
+        });
+      });
+  } else {
+    //Campground.find({}, function(err, allCampgrounds) {
+    //new find for pagination implementation
+    Campground.find({})
+      .skip(perPage * pageNumber - perPage)
+      .limit(perPage)
+      .exec(function(err, allCampgrounds) {
+        Campground.count().exec(function(err, count) {
+          if (err) {
+            console.log(err);
           } else {
             res.render("campgrounds/index", {
               campgrounds: allCampgrounds,
@@ -40,21 +79,8 @@ router.get("/", function(req, res) {
               //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
             }); //render campgrounds page and pass trough campgrounds from DB
           }
-        }
-      }
-    );
-  } else {
-    Campground.find({}, function(err, allCampgrounds) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.render("campgrounds/index", {
-          campgrounds: allCampgrounds,
-          page: "campgrounds"
-          //,currentUser: req.user // pass trough req.user that contains user inf (id an username), and if its not login will be undefined, we have access to this variable on header because header is include um index.ejs, but will works on /camprgrouds so we have to pass this in every rout that uses header
-        }); //render campgrounds page and pass trough campgrounds from DB
-      }
-    });
+        });
+      });
   }
 });
 
