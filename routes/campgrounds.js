@@ -37,7 +37,7 @@ router.get("/", function(req, res) {
       .skip(perPage * pageNumber - perPage)
       .limit(perPage)
       .exec(function(err, allCampgrounds) {
-        Campground.count({
+        Campground.countDocuments({
           $or: [{ name: regex }, { "author.username": regex }]
         }).exec(function(err, count) {
           if (err) {
@@ -69,7 +69,7 @@ router.get("/", function(req, res) {
       .skip(perPage * pageNumber - perPage)
       .limit(perPage)
       .exec(function(err, allCampgrounds) {
-        Campground.count().exec(function(err, count) {
+        Campground.countDocuments().exec(function(err, count) {
           if (err) {
             console.log(err);
           } else {
