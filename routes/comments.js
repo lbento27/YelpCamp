@@ -10,6 +10,9 @@ var Comment = require("../models/comment");
 //if we require a folder automatic node requires index.js file in that folder so--- var middleware= require("../middleware/index.js"); can be
 var middleware = require("../middleware");
 
+// some logic not necessary, this section is in a collapse on campgrounds->show.ejs
+//but some routs still contain the logic used in the new collapse comments section
+
 //!====================
 //!COMMENTS ROUTES
 //!====================
