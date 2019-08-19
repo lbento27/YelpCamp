@@ -54,7 +54,41 @@
                 <% } %>
             </div>
         </div>
-        <!--COMMENT SECTION START-->
+        <!-- old comment section -->
+        <!-- <div class="well">
+                    <div class="text-right">
+                        <a class="btn btn-success" href="/campgrounds/<%=campground._id%>/comments/new">Add New Comment</a>
+                    </div>
+                    <hr>
+                    <% campground.comments.forEach(function(comment){%>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong>
+                                <%=comment.author.username%>
+                            </strong>
+                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %> </span>
+                            <p>
+                                <%=comment.text%>
+                            </p>
+
+                            <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){%>
+                            <a class="btn btn-xs btn-warning"
+                                href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
+
+                            <form class="delete-form"
+                                action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" ,
+                                method="POST">
+                                <button class="btn btn-xs btn-danger">Delete</button>
+                            </form>
+                            <% } %>
+
+                        </div>
+                    </div>
+                    <%})%>
+                </div> -->
+        <!-- end old comment section -->
+
+        <!--NEW COMMENT SECTION START-->
         <div class="well">
             <!--Setting up the add new comment button that is used for collapsing-->
             <div class="text-right">
